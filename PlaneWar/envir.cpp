@@ -9,11 +9,11 @@ envir::envir(int width, int height) {
 }
 envir::~envir() {}
 void envir::draw() {
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
-			if (i == 0 || i == height - 1 || j == 0 || j == width - 1)
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			if (i == 0 || i == width - 1 || j == 0 || j == height - 1)
 			{
-				gotoxy(j, i);
+				gotoxy(i, j);
 				cout << wall;
 			}
 		}
