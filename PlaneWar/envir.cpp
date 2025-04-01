@@ -16,9 +16,16 @@ void envir::draw() {
 				gotoxy(i, j);
 				cout << wall;
 			}
+			else {
+				gotoxy(i, j);
+				cout << ' ';
+			}
 		}
 	}
 }
 void envir::setWall(char wall) {
 	this->wall = wall;
+}
+int envir::getHeight() {
+	return height;
 }
