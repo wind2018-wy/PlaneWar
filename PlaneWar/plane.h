@@ -17,6 +17,7 @@ public:
 	void settip(int = 1, int = 0);
 	void drawBody(int);
 	void setPos(int x, int y);
+	void clearBody(int=0);
 
 	int getX();
 	int getY();
@@ -37,12 +38,12 @@ class enemyPlane :public planeBody {
 private:
 	axis deadLine[10]{ -1,-1 };
 	int x, y;
-	int eneSpeed;
 	int planeType;
+public:
 	int speed;
 	int speedBin;
-public:
 	void setDeadLine(int);
+	void shoot(int=-1);
 	enemyPlane();
 	~enemyPlane(){}
 	void setxy(int, int);

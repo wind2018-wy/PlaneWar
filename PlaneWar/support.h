@@ -6,8 +6,9 @@ void getxy(int& x, int& y);
 // 根据当前时间生成种子
 class randomGenerator {
 public:
-    randomGenerator();
+    randomGenerator(int, int);
     int generate(); // 生成一个随机数
+    void setRange(int min, int max);
 private:
     std::mt19937 gen;
     std::uniform_int_distribution<int> dist;

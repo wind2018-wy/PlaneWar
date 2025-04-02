@@ -16,13 +16,21 @@ void getxy(int& x, int& y) {
         y = csbi.dwCursorPosition.Y; // 获取行号
     }
 }
-randomGenerator::randomGenerator()
+randomGenerator::randomGenerator(int min, int max)
     : gen(std::chrono::system_clock::now().time_since_epoch().count()),
-    dist(2, 65) {
+    dist(min, max) {
 }
+
+// 生成随机数的方法
 int randomGenerator::generate() {
     return dist(gen);
-}char getChar(int x, int y) {
+}
+
+// 如果需要动态更改范围，可以提供一个方法
+void randomGenerator::setRange(int min, int max) {
+    dist = std::uniform_int_distribution<int>(min, max);
+}
+char getChar(int x, int y) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // 获取控制台句柄
     if (hConsole == INVALID_HANDLE_VALUE) {
         std::cerr << "Failed to get console handle!" << std::endl;
@@ -42,6 +50,7 @@ int randomGenerator::generate() {
     return buffer; // 返回读取到的字符
 }
 void clearPartialLine(int line, int startColumn, int length) {
+    line++; startColumn++;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // 获取控制台句柄
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hConsole, &csbi); // 获取当前控制台信息

@@ -5,7 +5,6 @@
 class bullet {
 private:
 	int x, y;
-	int bulletSpeed;
 	int bulletPower;
 	int bulletNum;
 protected:
@@ -15,6 +14,7 @@ public:
 	static int score;
 	bullet(int, int);
 	int speedBin;
+	int bulletSpeed;
 	int getx();
 	int gety();
 	void addBullet();

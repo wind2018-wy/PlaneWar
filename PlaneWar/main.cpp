@@ -7,63 +7,85 @@
 #include<thread>
 #include<iostream>
 #include<vector>
-using namespace std;
 int main() {
 	hideConsoleCursor();
 	envir e;
 	plane a;
 	e.draw();
-	vector<bullet>bullets(30, bullet(0, 0));
+	std::vector<bullet>bullets(30, bullet(0, 0));
 	for (int i = 0; i < 30; i++) {
 		bullets[i].addBullet();
 	}
 	gotoxy(1, 1);
 	a.addBody();
-	cout << "请输入同一时间内出现敌机数量";
-	int eneC; cin >> eneC;
+	std::cout << "请输入同一时间内出现敌机数量";
+	int eneC; std::cin >> eneC;
+	system("cls");
+	e.draw();
 	bullet::score -= eneC;
-	vector<enemyPlane>enemies(eneC);
+	std::vector<enemyPlane>enemies(eneC);
 	for (int i = 0; i < eneC; i++) {
 		enemies[i].addBody();
 		enemies[i].setDeadLine(-1);
 	}
 	
+
 	while (1) {
+
+		//查看每颗子弹的状态并清理
+		for (int i = 0; i < 30; i++) {
+			if (bullets[i].gety() != 0) {
+				bullet& aa = bullets[i];
+				gotoxy(aa.getx(), aa.gety());
+				int tx = aa.getx(), ty = aa.gety();
+				aa.flyBullet(1);
+			}
+		}
+		//查看敌机的状态
+		for (int i = 0; i < eneC; i++) {
+			int eneBodyType = 1;
+			if (enemies[i].gety() >= e.getHeight() - 3) {
+				//敌机到底清一下
+				if (eneBodyType == 1) {
+					int ty = enemies[i].gety(), tx = enemies[i].getx();
+					clearPartialLine(ty, tx, 3);
+					clearPartialLine(ty + 1, tx - 1, 5);
+					clearPartialLine(ty + 2, tx + 1, 1);
+				}
+				enemies[i].getNew(eneBodyType);
+				enemies[i].setContour();
+			}
+			else {
+				if (enemies[i].checkBomb(bullet::goal)) {
+					//敌机爆炸清一下
+					if (eneBodyType == 1) {
+						int ty = enemies[i].gety(), tx = enemies[i].getx();
+						clearPartialLine(ty, tx, 3);
+						clearPartialLine(ty + 1, tx - 1, 5);
+						clearPartialLine(ty + 2, tx + 1, 1);
+					}
+					enemies[i].getNew(eneBodyType);
+					enemies[i].setContour();
+					bullet::score++;
+				}
+			}
+			//其他位置清一下
+			enemies[i].draw(eneBodyType);
+		}
+		/*
 		for (int i = 2; i < 28; i++) {
+			if(lineToClear[i-2])
 			clearPartialLine(i, 2, 68);
 		}
+		*/
 		//system("cls");
 		//e.draw();
 		a.drawBody(0);
 		int bulletsCount = 0;
 
-		for (int i = 0; i < eneC; i++) {
-			int j = 1;
-			if (enemies[i].gety() >= e.getHeight()-3) {
-				enemies[i].getNew(j);
-				enemies[i].setContour();
-			}
-			else {
-				if (enemies[i].checkBomb(bullet::goal)) {
-					enemies[i].getNew(j);
-					enemies[i].setContour();
-					bullet::score++;
-				}
-			}
-			enemies[i].draw(j);
-		}
-
-		for (int i = 0; i < 30; i++) {
-			if (bullets[i].gety()!=0) {
-				bullet& aa = bullets[i];
-				gotoxy(aa.getx(), aa.gety());
-				aa.flyBullet(1);
-				bulletsCount++;
-			}
-		}
+		
 		gotoxy(0, 29);
-		cout << "the count of  bullets is " << bulletsCount;
-		cout << " score: " << bullet::score;
+		std::cout << " score: " << bullet::score;
 		if (_kbhit()) {
 			char ch = _getch();
 			a.act(ch);

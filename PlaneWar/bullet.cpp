@@ -19,21 +19,26 @@ void pushBulletB() {
 	std::cout << "\\+/";
 	gotoxy(x + 1, y + 1);
 	std::cout << "|";
-	gotoxy(x, y);
 }
 void bullet::flyBullet(int a) {
 	bulletNum = a;
 	if (speedBin >= bulletSpeed) {
+		clearPartialLine(y, x, 3);
+		clearPartialLine(y + 1, x + 1, 1);
 		y--;
 		speedBin = 1;
 	}
+	gotoxy(x, y);
 	speedBin++;
+	if(y!=0)
 	bulletType[a]();
-
+	//Åö×²±ê¼ÇÅÐ¶Ï
 	if (a == 0||a==1) {
-		if (getChar(x + 1, y) != ' ') {
-			goal = { x + 1,y };
-			if (getChar(x + 1, y) == '^' || getChar(x + 1, y) == '-') {
+		if (getChar(x + 1, y-1) != ' ') {
+			goal = { x + 1,y-1 };
+			if (getChar(x + 1, y-1) == '^' || getChar(x + 1, y-1) == '-') {
+				clearPartialLine(y, x, 3);
+				clearPartialLine(y + 1, x + 1, 1);
 				y = 0;
 			}
 		}
