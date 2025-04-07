@@ -65,8 +65,6 @@ void plane::move(char ch) {
 		break;
 	}
 	gotoxy(0, 28);
-	std::cout << "x: " << x << " y: " << y
-		<< theAxis[0].x << ' ' << theAxis[0].y;
 }
 void planeBody::settip(int w, int h) { tipw = w, tiph = h; }
 int planeBody::getX() {
