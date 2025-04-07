@@ -44,7 +44,7 @@ int main() {
 		//查看敌机的状态
 		for (int i = 0; i < eneC; i++) {
 			int eneBodyType = 1;
-			if (enemies[i].gety() >= e.getHeight() - 3) {
+			if (enemies[i].gety() >= e.getHeight() - 4) {
 				//敌机到底清一下
 				if (eneBodyType == 1) {
 					int ty = enemies[i].gety(), tx = enemies[i].getx();
@@ -71,6 +71,18 @@ int main() {
 			}
 			//其他位置清一下
 			enemies[i].draw(eneBodyType);
+			if (enemies[i].eneBullet.eneFlyBullet()/*这里写敌机子弹型号，但还没有试过*/) {
+				enemies[i].eneBullet.setNewEneBullet(enemies[i].getx(), enemies[i].gety(), 0);
+				//enemies[i].eneBullet.setNewEneBullet(enemies[i].getx(), enemies[i].gety(), 1);
+				
+			}
+			for (int w = 0; w < 3; w++) {
+				if (enemies[i].eneBullet.getx()+1 == a.theAxis[w].x && enemies[i].eneBullet.gety() == a.theAxis[w].y) {
+					bullet::score--;
+					enemies[i].eneBullet.setNewEneBullet(enemies[i].getx(), enemies[i].gety(), 0);
+					break;
+				}
+			}
 		}
 		/*
 		for (int i = 2; i < 28; i++) {

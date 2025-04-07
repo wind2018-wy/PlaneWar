@@ -44,6 +44,30 @@ void bullet::flyBullet(int a) {
 		}
 	}
 }
+bool bullet::eneFlyBullet(int eneBulletType) {
+	
+	if (bulletSpeed == speedBin) {
+		clearPartialLine(y, x+1, 1);
+		y++;
+		gotoxy(x, y);
+		bulletType[eneBulletType]();
+		speedBin = 1;
+	}
+	gotoxy(0, 30);
+	speedBin++;
+	if (y >= 26) { clearPartialLine(y, x + 1, 1); return true; }
+	else return false;
+}
+void bullet::setBulletSpeed(int a) {
+	bulletSpeed = a;
+}
+void bullet::setNewEneBullet(int x, int y,int eneBulletType) {
+	randomGenerator ranX(100,200);
+	bulletSpeed = ranX.generate();
+	bulletNum = eneBulletType;
+	this->x = x;
+	this->y = y;
+}
 int bullet::getx() { return x; }
 int bullet::gety() { return y; }
 void bullet::setxy(int x, int y) { this->x = x; this->y = y; }

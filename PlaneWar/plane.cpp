@@ -5,7 +5,7 @@
 #include<iostream>
 #include<conio.h>
 
-planeBody::planeBody() { setXY(27, 10); }
+planeBody::planeBody() { setXY(27, 23); theAxis[0] = { 27,23 }; theAxis[1] = { 28,23 }; theAxis[2] = { 29,23 }; }
 planeBody::~planeBody() {}
 void planeBody::setXY(int x, int y) {
 	this->x = x;
@@ -17,35 +17,56 @@ void plane::move(char ch) {
 		if (y == 1)break;
 		clearBody();
 		this->y--;
+		theAxis[0].y--;
+		theAxis[1].y--;
+		theAxis[2].y--;
 		break;
 	case 's':
 		if (y == 24)break;
 		clearBody();
 		this->y++;
+		theAxis[0].y++;
+		theAxis[1].y++;
+		theAxis[2].y++;
 		break;
 	case 'a':
 		if (x == 2)break;
 		clearBody();
 		this->x--;
+		theAxis[0].x--;
+		theAxis[1].x--;
+		theAxis[2].x--;
 		break;
 	case 'd':
 		if (x == 66)break;
 		clearBody();
 		this->x++;
+		theAxis[0].x++;
+		theAxis[1].x++;
+		theAxis[2].x++;
 		break;
 	case 'q':
 		if (x < 4)break;
 		clearBody();
 		this->x -= 2;
+		theAxis[0].x -= 2;
+		theAxis[1].x -= 2;
+		theAxis[2].x -= 2;
 		break;
 	case 'e':
 		if (x > 64)break;
 		clearBody();
 		this->x += 2;
+		theAxis[0].x += 2;
+		theAxis[1].x += 2;
+		theAxis[2].x += 2;
 		break;
 	default:
 		break;
 	}
+	gotoxy(0, 28);
+	std::cout << "x: " << x << " y: " << y
+		<< theAxis[0].x << ' ' << theAxis[0].y;
 }
 void planeBody::settip(int w, int h) { tipw = w, tiph = h; }
 int planeBody::getX() {
@@ -91,10 +112,14 @@ plane::~plane() {}
 void plane::act(char ch) {
 	move(ch);
 }
-enemyPlane::enemyPlane() :y(1),speedBin(1) { 
+enemyPlane::enemyPlane() :y(1),speedBin(1){ 
+	eneBullet.addBullet();
+	eneBullet.setBulletSpeed(100);
+	eneBullet.speedBin = 100;
 	randomGenerator ranX(2,65);
 	x = ranX.generate();
-	speed = 1000;
+	eneBullet.setxy(x, y+3);//敌机的子弹有问题
+	speed = 2500;
 }
 void enemyPlane::setDeadLine(int temp) {
 	for (int i = 0; i < 10; i++) {

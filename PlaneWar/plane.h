@@ -16,8 +16,9 @@ public:
 	void setXY(int x, int y);
 	void settip(int = 1, int = 0);
 	void drawBody(int);
-	void setPos(int x, int y);
+	void setPos(int x, int y){}
 	void clearBody(int=0);
+	axis theAxis[10]{ -1,-1 };
 
 	int getX();
 	int getY();
@@ -40,6 +41,7 @@ private:
 	int x, y;
 	int planeType;
 public:
+	bullet eneBullet;
 	int speed;
 	int speedBin;
 	void setDeadLine(int);
