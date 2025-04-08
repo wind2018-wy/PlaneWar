@@ -20,6 +20,15 @@ int main() {
 	a.addBody();
 	std::cout << "请输入同一时间内出现敌机数量";
 	int eneC; std::cin >> eneC;
+	gotoxy(1, 2);
+	std::cout << "请输入敌机的总数";
+	int totalEneC; std::cin >> totalEneC;
+	if (eneC > totalEneC) {
+		gotoxy(1, 3);
+		std::cout << "敌机数量不合法";
+		return 0;
+	}
+	int eneCount = 0;
 	system("cls");
 	e.draw();
 	bullet::score -= eneC;
@@ -27,6 +36,7 @@ int main() {
 	for (int i = 0; i < eneC; i++) {
 		enemies[i].addBody();
 		enemies[i].setDeadLine(-1);
+		eneCount--;
 	}
 	
 
@@ -54,6 +64,7 @@ int main() {
 				}
 				enemies[i].getNew(eneBodyType);
 				enemies[i].setContour();
+				eneCount++;
 			}
 			else {
 				if (enemies[i].checkBomb(bullet::goal)) {
@@ -67,6 +78,7 @@ int main() {
 					enemies[i].getNew(eneBodyType);
 					enemies[i].setContour();
 					bullet::score++;
+					eneCount++;
 				}
 			}
 			//其他位置清一下
@@ -74,10 +86,10 @@ int main() {
 			if (enemies[i].eneBullet.eneFlyBullet()/*这里写敌机子弹型号，但还没有试过*/) {
 				enemies[i].eneBullet.setNewEneBullet(enemies[i].getx(), enemies[i].gety(), 0);
 				//enemies[i].eneBullet.setNewEneBullet(enemies[i].getx(), enemies[i].gety(), 1);
-				
+
 			}
 			for (int w = 0; w < 3; w++) {
-				if (enemies[i].eneBullet.getx()+1 == a.theAxis[w].x && enemies[i].eneBullet.gety() == a.theAxis[w].y) {
+				if (enemies[i].eneBullet.getx() + 1 == a.theAxis[w].x && enemies[i].eneBullet.gety() == a.theAxis[w].y) {
 					bullet::score--;
 					enemies[i].eneBullet.setNewEneBullet(enemies[i].getx(), enemies[i].gety(), 0);
 					break;
@@ -95,7 +107,7 @@ int main() {
 		a.drawBody(0);
 		int bulletsCount = 0;
 
-		
+
 		gotoxy(0, 29);
 		std::cout << " score: " << bullet::score;
 		if (_kbhit()) {
@@ -114,7 +126,19 @@ int main() {
 				}
 			}
 		}
+		if (eneCount == totalEneC) {
+			break;
+		}
 	}
-	gotoxy(0, 29);
+	for (int i = 1; i < 27; i++) {
+		clearPartialLine(i, 1, 67);
+	}
+	for (int i = 28; i < 30; i++) {
+		clearPartialLine(i, 1, 67);
+	}
+	gotoxy(1, 1);
+	std::cout << "游戏结束，您的得分是：" << bullet::score
+		<< std::endl << "·请按任意键退出";
+	gotoxy(0, 27);
 	return 0;
 }
